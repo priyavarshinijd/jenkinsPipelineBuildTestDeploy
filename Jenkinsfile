@@ -1,32 +1,21 @@
 node('master') {
   
-   stage 'Git Checkout'
+  stage ('Git Checkout'){
      git 'https://github.com/priyavarshinijd/spring-petclinic.git'
-         echo 'checkout done'
+     echo 'checkout done'
+}
 
    stage('Maven Build'){
       echo 'Maven Project Compile'
-      steps {
-                sh '''
-                    echo "PATH = ${PATH}"
-                    echo "M2_HOME = ${M2_HOME}"
-                '''
-            }
-      steps{
-        sh 'mvn install' 
-      } 
-      post {
-          success {
-              junit 'target/surefire-reports/**/*.xml' 
-          }
-      }
-   }
+      maven 'clean install'
+      junit 'target/surefire-reports/**/*.xml' 
+ }
 
 
-   stage 'Test Case'
-        echo 'Test Case will running'
+   stage 'Deploy'
+        echo 'Deploying Docker Image'
 
-   stage 'Reporting'
+   stage 'Testing'
         echo 'Reporting Getting Creating'
 
    stage 'Job Status Status'
