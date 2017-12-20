@@ -5,6 +5,15 @@ node('master') {
      echo 'checkout done'
 }
 
+checkout([$class: 'GitSCM', branches: [[name: '*/master']], browser: [$class: 'GithubWeb', repoUrl: 'https://github.com/priyavarshinijd/'], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/priyavarshinijd/spring-petclinic.git']]])
+
+bat 'mvnw.cmd clean install'
+
+bat '''cd docker
+cd internal-db
+docker-build -t spring-petclinic .'''
+  
+  
    stage('Maven Build'){
       echo 'Maven Project Compile'
       maven 'clean install'
